@@ -30,8 +30,11 @@ app.post('/usuario', (req, res) => {
 
 });
 
-app.put('/usuario', (req, res) => {
-    res.json('Put usuario');
+app.put('/usuario/:id', (req, res) => {
+    let id = req.params.id;
+    res.json({
+        id
+    });
 });
 
 app.patch('/usuario', (req, res) => {
