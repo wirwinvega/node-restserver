@@ -1,6 +1,8 @@
 require('./config/config');
 
 const express = require('express');
+const mongoose = require('mongoose');
+
 const app = express();
 
 const bodyParser = require('body-parser')
@@ -11,38 +13,11 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.get('/usuario', (req, res) => {
-    res.json('Get usuario');
-});
+app.use(require('../server/routes/user'));
 
-app.post('/usuario', (req, res) => {
-    let body = req.body;
-    if (body.name === undefined) {
-        res.status(400).json({
-            ok: false,
-            message: 'Field name is required.'
-        })
-    } else {
-        res.json({
-            persona: body
-        });
-    }
-
-});
-
-app.put('/usuario/:id', (req, res) => {
-    let id = req.params.id;
-    res.json({
-        id
-    });
-});
-
-app.patch('/usuario', (req, res) => {
-    res.json('Patch usuario');
-});
-
-app.delete('/usuario', (req, res) => {
-    res.json('Delete usuario');
+mongoose.connect(process.env.URLDB, { useNewUrlParser: true }, (err, res) => {
+    if (err) throw err;
+    console.log('Conectado a mongoose success');
 });
 
 app.listen(process.env.PORT, () => {
