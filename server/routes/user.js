@@ -3,9 +3,11 @@ const bcrypt = require('bcrypt');
 const _ = require('underscore');
 const User = require('../models/user');
 
+const { verifyToken, verifyAdminRole } = require('../middlewares/auth');
+
 const app = express();
 
-app.get('/usuario', (req, res) => {
+app.get('/usuario', verifyToken, (req, res) => {
 
     let offset = req.query.offset || 0;
     offset = Number(offset);
@@ -33,7 +35,7 @@ app.get('/usuario', (req, res) => {
 
 });
 
-app.post('/usuario', (req, res) => {
+app.post('/usuario', [verifyToken, verifyAdminRole], (req, res) => {
     let body = req.body;
 
     let user = new User({
@@ -60,7 +62,7 @@ app.post('/usuario', (req, res) => {
 
 });
 
-app.put('/usuario/:id', (req, res) => {
+app.put('/usuario/:id', [verifyToken, verifyAdminRole], (req, res) => {
     let id = req.params.id;
     let body = _.pick(req.body, ['name', 'email', 'img', 'role', 'status']);
 
@@ -80,18 +82,18 @@ app.put('/usuario/:id', (req, res) => {
 
         res.json({
             ok: true,
-            'user': userDB
+            user: userDB
         });
 
     });
 
 });
 
-app.patch('/usuario', (req, res) => {
+app.patch('/usuario', [verifyToken, verifyAdminRole], (req, res) => {
     res.json('Patch usuario');
 });
 
-app.delete('/usuario/:id', (req, res) => {
+app.delete('/usuario/:id', [verifyToken, verifyAdminRole], (req, res) => {
 
     let id = req.params.id;
     let body = { status: false };
