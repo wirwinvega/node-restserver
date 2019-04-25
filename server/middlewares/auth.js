@@ -22,7 +22,7 @@ let verifyToken = (req, res, next) => {
 let verifyAdminRole = (req, res, next) => {
 
     let user = req.user;
-
+    console.log(user);
     if (user.role !== 'ADMIN_ROLE') {
         return res.status(400).json({
             ok: false,
