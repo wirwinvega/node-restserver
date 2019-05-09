@@ -8,6 +8,7 @@ var productSchema = new Schema({
     description: { type: String, required: false },
     available: { type: Boolean, required: true, default: true },
     category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
+    img: { type: String, required: false },
     user: { type: Schema.Types.ObjectId, ref: 'User' }
 });
 
